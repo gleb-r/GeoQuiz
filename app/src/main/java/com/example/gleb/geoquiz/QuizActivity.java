@@ -1,7 +1,8 @@
 package com.example.gleb.geoquiz;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
+    private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
@@ -26,8 +29,19 @@ public class QuizActivity extends AppCompatActivity {
     private int mCurrentIndex;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG,"onSaveInstanceState");
+        outState.putInt(KEY_INDEX,mCurrentIndex);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+        }
+        Log.d(TAG,"onCreate(Boundle) called");
         setContentView(R.layout.activity_quiz);
         mQuestionTextView= (TextView)findViewById(R.id.question_text_view);
         updateQuestion();
@@ -75,5 +89,35 @@ public class QuizActivity extends AppCompatActivity {
             messageResId = R.string.incorrect_toast;
         }
         Toast.makeText(this,messageResId,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart() called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause() called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume() called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG,"onStop() called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy() called");
     }
 }
