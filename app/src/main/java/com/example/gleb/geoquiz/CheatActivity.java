@@ -10,17 +10,25 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class CheatActivity extends AppCompatActivity {
-    public static final String EXTRA_ANWER_IS_TRUE = "com.example.gleb.geoquiz.answer_is_true";
+    public static final String EXTRA_ANSWER_IS_TRUE = "com.example.gleb.geoquiz.answer_is_true";
     public static final String EXTRA_ANSWER_SHOWN = "com.example.gleb.geoquiz.answer_shown";
+    private static final String KEY_CHEATING = "cheating";
     private boolean mAnswerIsTrue;
     private Button mShowAnswerButton;
     private TextView mAnswerTextView;
+    private boolean mIsAnswerShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null)
+        {
+            if (savedInstanceState.getBoolean(KEY_CHEATING)) {
+                setAnswerShownResult(true);
+            }
+        }
         setContentView(R.layout.activity_cheat);
-        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANWER_IS_TRUE,false);
+        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE,false);
         mAnswerTextView = (TextView)findViewById(R.id.answer_text_view);
         mShowAnswerButton = (Button)findViewById(R.id.show_answer_button);
         mShowAnswerButton.setOnClickListener(new OnClickListener() {
@@ -32,15 +40,21 @@ public class CheatActivity extends AppCompatActivity {
                 else{
                     mAnswerTextView.setText(R.string.false_button);
                 }
-
+                mIsAnswerShown = true;
                 setAnswerShownResult(true);
             }
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_CHEATING, mIsAnswerShown);
+    }
+
     public static Intent newIntent (Context packageContext, boolean answerIsTrue) {
         Intent i = new Intent(packageContext,CheatActivity.class);
-        i.putExtra(EXTRA_ANWER_IS_TRUE,answerIsTrue);
+        i.putExtra(EXTRA_ANSWER_IS_TRUE,answerIsTrue);
         return i;
     }
 

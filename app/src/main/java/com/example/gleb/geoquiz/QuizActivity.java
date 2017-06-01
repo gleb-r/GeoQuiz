@@ -15,6 +15,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_CHEATING = "cheating";
     private static final int REQUEST_CODE_CHEAT =0;
     private Button mTrueButton;
     private Button mFalseButton;
@@ -51,6 +52,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.i(TAG,"onSaveInstanceState");
         outState.putInt(KEY_INDEX,mCurrentIndex);
+        outState.putBoolean(KEY_CHEATING,mIsCheater);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+            mIsCheater = savedInstanceState.getBoolean(KEY_CHEATING);
         }
         Log.d(TAG,"onCreate(Boundle) called");
         setContentView(R.layout.activity_quiz);
