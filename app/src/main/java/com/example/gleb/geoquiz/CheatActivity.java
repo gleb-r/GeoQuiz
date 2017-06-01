@@ -1,11 +1,16 @@
 package com.example.gleb.geoquiz;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -36,12 +41,32 @@ public class CheatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mAnswerIsTrue) {
                     mAnswerTextView.setText(R.string.true_button);
-                }
-                else{
+                } else {
                     mAnswerTextView.setText(R.string.false_button);
                 }
                 mIsAnswerShown = true;
                 setAnswerShownResult(true);
+
+                if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                    int cx = mShowAnswerButton.getWidth() / 2;
+                    int cy = mShowAnswerButton.getHeight() / 2;
+                    float radius = mShowAnswerButton.getHeight();
+                    Animator animator = ViewAnimationUtils.
+                            createCircularReveal(mShowAnswerButton, cx, cy, radius, 0);
+                    animator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mAnswerTextView.setVisibility(View.VISIBLE);
+                            mShowAnswerButton.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    animator.start();
+                } else {
+                    mAnswerTextView.setVisibility(View.VISIBLE);
+                    mShowAnswerButton.setVisibility(View.INVISIBLE);
+
+                }
             }
         });
     }
