@@ -22,6 +22,7 @@ public class CheatActivity extends AppCompatActivity {
     private Button mShowAnswerButton;
     private TextView mAnswerTextView;
     private boolean mIsAnswerShown = false;
+    private TextView mApiLevelTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class CheatActivity extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_cheat);
+        mApiLevelTextView = (TextView)findViewById(R.id.api_level_text_view);
+        mApiLevelTextView.setText(String.format("API level %d",VERSION.SDK_INT));
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE,false);
         mAnswerTextView = (TextView)findViewById(R.id.answer_text_view);
         mShowAnswerButton = (Button)findViewById(R.id.show_answer_button);
@@ -57,7 +60,8 @@ public class CheatActivity extends AppCompatActivity {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            mAnswerTextView.setVisibility(View.VISIBLE);
+
+                            mAnswerTextView.setVisibility(View.VISIBLE); // не понял зачем сточка
                             mShowAnswerButton.setVisibility(View.INVISIBLE);
                         }
                     });
